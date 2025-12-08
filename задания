@@ -1,0 +1,133 @@
+﻿using System.Security.Cryptography.X509Certificates;
+
+namespace прак17
+{
+    struct Color
+    {
+        //zad1
+        public int R { get; set; }
+        public int G { get; set; }
+        public int B { get; set; }
+        public Color(int r, int g, int b) { R = r; G = g; B = b; }
+
+
+        public override string ToString()
+        {
+            return $"({R}, {G}, {B})";
+        }
+
+        //zad2
+        class Order
+        {
+            public int Id { get; set; }
+            public decimal Total { get; set; }
+        }
+
+
+        //zad3
+        enum FileAccess
+        {
+            None, Read, Write, Execute
+        }
+        struct File
+        {
+            public FileAccess Permissions { get; set; }
+
+            public bool CanRead()
+            {
+                return true;
+            }
+            public bool CanWrite()
+            {
+                return true;
+            }
+        }
+
+
+        //zad4
+        struct Weather
+        {
+            public string City { get; set; }
+            public double? Temperature { get; set; }
+
+            public override string ToString()
+            {
+                if (Temperature == null)
+                    return $"{City} : Нет данных";
+                else
+                    return $"{City} : {Temperature.ToString()}";
+            }
+        }
+        //zad5
+        enum EmploymentStatus { Active, OnLeave, Terminated }
+        class Employee
+        {
+            public string Name { get; set; }
+            public DateTime? HireDate { get; set; }
+            public EmploymentStatus Status { get; set; }
+
+            public int GetYearsWorked()
+            {
+                if (HireDate == null)
+                {
+                    return -1;
+                }
+                return DateTime.Now.Year - HireDate.Value.Year;
+            }
+            public override string ToString()
+            {
+                return $"Имя: {Name} Cтатус: {Status} Стаж: {HireDate?.ToString("dd.MM.yyyy") ?? "Не указан"}";
+            }
+        }
+
+        internal class Program
+        {
+            static void Main()
+            {
+                //zad1
+                var c1 = new Color(255, 128, 0);
+                var c2 = c1;
+                c2.R = 100;
+                Console.WriteLine(c1);
+                Console.WriteLine(c2);
+                Console.WriteLine();
+
+                //zad2
+                var order1 = new Order { Id = 1001, Total = 1500.50m };
+                var order2 = order1;
+                order2.Total = 2000.00m;
+                Console.WriteLine(order1.Total);
+                Console.WriteLine();
+
+                //zad3
+                var f = new File { Permissions = FileAccess.Read | FileAccess.Write };
+                Console.WriteLine(f.CanRead());
+                Console.WriteLine(f.CanWrite());
+                Console.WriteLine();
+
+                //zad4
+                var w1 = new Weather { City = "Москва", Temperature = 22.5 };
+                var w2 = new Weather { City = "Сочи", Temperature = null };
+                Console.WriteLine(w1);
+                Console.WriteLine(w2);
+                Console.WriteLine(w2.Temperature ?? -999);
+                Console.WriteLine();
+
+                //zad5
+                var emp = new Employee
+                {
+                    Name = "Петр",
+                    HireDate = new DateTime(2020, 3, 15),
+                    Status = EmploymentStatus.Active
+                };
+                Console.WriteLine(emp.GetYearsWorked());
+                emp.HireDate = null;
+                Console.WriteLine(emp.GetYearsWorked());
+                Console.WriteLine(emp);
+
+            }
+        }
+    }
+}
+
+
